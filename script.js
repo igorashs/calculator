@@ -70,15 +70,19 @@ function insertOperator(oper) {
   if (lastC == '.') currentOperand = currentOperand.replace('.', '');
   if (firstC == '.') currentOperand = '0' + currentOperand;
 
-  if (currentOperand == '0' && currentOperation != '') {
+  if (
+    (currentOperand == '0' || currentOperand == '') &&
+    currentOperation != ''
+  ) {
     lastC = currentOperation.charAt(currentOperation.length - 1);
-    if (lastC == '+' || lastC == '-' || lastC == '*' || lastC == '/')
+    if (lastC == '+' || lastC == '-' || lastC == '*' || lastC == '/') {
       currentOperation = currentOperation.replace(/.$/, oper);
+    }
   } else {
-    currentOperation += currentOperand + oper;
+    if (currentOperand != '') currentOperation += currentOperand + oper;
     currentOperand = '0';
   }
-
+  //if (currentOperand == '0') currentOperand = '';
   resultInputText.textContent = currentOperation;
 }
 
@@ -112,8 +116,13 @@ function undoInput() {
   }
 
   if (currentOperation != '' && currentOperand != '') {
-    currentOperand = currentOperand.replace(/.$/, '');
+    if (currentOperand == '0') {
+      currentOperand = currentOperand.replace(/.$/, '');
+    } else {
+      currentOperand = currentOperand.replace(/.$/, '');
+    }
     resultInputText.textContent = currentOperation + currentOperand;
+    return;
   }
 
   console.log('current operand ' + currentOperand);
