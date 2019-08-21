@@ -66,7 +66,9 @@ function insertDigit(digit) {
 
 function insertOperator(oper) {
   let lastC = currentOperand.charAt(currentOperand.length - 1);
+  let firstC = currentOperand.charAt(0);
   if (lastC == '.') currentOperand = currentOperand.replace('.', '');
+  if (firstC == '.') currentOperand = '0' + currentOperand;
 
   if (currentOperand == '0' && currentOperation != '') {
     lastC = currentOperation.charAt(currentOperation.length - 1);
@@ -92,5 +94,29 @@ function insertDot() {
   resultInputText.textContent = currentOperation + currentOperand;
 }
 
-// what if operator?
-function undoInput() {}
+function undoInput() {
+  if (currentOperation == '') {
+    if (currentOperand != '0') {
+      currentOperand = currentOperand.replace(/.$/, '');
+      if (currentOperand == '') currentOperand = '0';
+    }
+    resultInputText.textContent = currentOperand;
+  }
+
+  if (currentOperation != '' && currentOperand == '') {
+    currentOperation = currentOperation.replace(/.$/, ''); //remove operator
+    currentOperand = currentOperation.match(/\d+(\.\d+)?$/)[0];
+
+    currentOperation = currentOperation.replace(/\d+(\.\d+)?$/, '');
+    resultInputText.textContent = currentOperation + currentOperand;
+  }
+
+  if (currentOperation != '' && currentOperand != '') {
+    currentOperand = currentOperand.replace(/.$/, '');
+    resultInputText.textContent = currentOperation + currentOperand;
+  }
+
+  console.log('current operand ' + currentOperand);
+  console.log('current operation ' + currentOperation);
+  console.log('result ' + resultInputText.textContent);
+}
