@@ -60,6 +60,8 @@ buttonsContainer.addEventListener('click', (e) => {
 function insertDigit(digit) {
   if (expression == '' && lastOperand == '0') {
     lastOperand = digit;
+  } else if (lastOperand == '0') {
+    lastOperand = digit;
   } else {
     lastOperand += digit;
   }
@@ -68,12 +70,40 @@ function insertDigit(digit) {
 }
 
 function insertOperator(oper) {
+  const LAST_OPER_REG = /[\+\-\*\/]$/;
+
+  if (lastOperand == '-') return;
+
   if (expression == '' && oper == '-' && lastOperand == '0') {
     lastOperand = '-';
     expressionOutput.textContent = lastOperand;
-  } else {
-    expression = oper + lastOperand;
+    return;
+  }
+
+  if (expression == '') {
+    expression = lastOperand + oper;
     expressionOutput.textContent = expression;
+    lastOperand = '';
+    return;
+  }
+
+  if (expression != '') {
+    let lastOper = expression.match(LAST_OPER_REG)[0];
+    if (
+      lastOperand == '' &&
+      oper == '-' &&
+      (lastOper == '*' || lastOper == '/')
+    ) {
+      lastOperand = oper;
+      expressionOutput.textContent = expression + lastOperand;
+    } else if (lastOperand == '') {
+      expression = expression.replace(LAST_OPER_REG, oper);
+      expressionOutput.textContent = expression;
+    } else if (lastOperand != '') {
+      expression += lastOperand + oper;
+      expressionOutput.textContent = expression;
+      lastOperand = '';
+    }
   }
 }
 
