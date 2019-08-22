@@ -107,7 +107,12 @@ function insertOperator(oper) {
   }
 }
 
-function clearAll() {}
+function clearAll() {
+  let lastOperand = '0';
+  let expression = '';
+  expressionOutput.textContent = '0';
+  evaluationOutput.textContent = '0';
+}
 
 function insertDot() {}
 
