@@ -71,6 +71,15 @@ function insertDigit(digit) {
 
 function insertOperator(oper) {
   const LAST_OPER_REG = /[\+\-\*\/]$/;
+  const DOT_ON_START_REG = /^\-?\./;
+  const DOT_ON_END_REG = /\.$/;
+
+  if (lastOperand != '') {
+    if (DOT_ON_START_REG.test(lastOperand))
+      lastOperand = lastOperand.replace('.', '0.');
+    if (DOT_ON_END_REG.test(lastOperand))
+      lastOperand = lastOperand.replace('.', '');
+  }
 
   if (lastOperand == '-') return;
 
@@ -108,13 +117,16 @@ function insertOperator(oper) {
 }
 
 function clearAll() {
-  let lastOperand = '0';
-  let expression = '';
+  lastOperand = '0';
+  expression = '';
   expressionOutput.textContent = '0';
   evaluationOutput.textContent = '0';
 }
 
-function insertDot() {}
+function insertDot() {
+  if (!lastOperand.includes('.')) lastOperand += '.';
+  expressionOutput.textContent = expression + lastOperand;
+}
 
 function undoInput() {}
 
