@@ -1,10 +1,11 @@
 'use strict';
 const buttonsContainer = document.querySelector('.buttons-container');
-const resultInputText = document.querySelector('.result-text');
-const operationInputText = document.querySelector('.operation-text');
+const expressionOutput = document.querySelector('.expression-text');
+const evaluationOutput = document.querySelector('.evaluation-text');
 
-let currentOperand = '';
-let currentOperation = '';
+const lastOperandReg = /[\*\/]\-?\d+(\.\d+)?$/;
+let lastOperand = '0';
+let expression = '';
 
 buttonsContainer.addEventListener('click', (e) => {
   let value = e.target.dataset.value;
@@ -56,9 +57,25 @@ buttonsContainer.addEventListener('click', (e) => {
   }
 });
 
-function insertDigit(digit) {}
+function insertDigit(digit) {
+  if (expression == '' && lastOperand == '0') {
+    lastOperand = digit;
+  } else {
+    lastOperand += digit;
+  }
 
-function insertOperator(oper) {}
+  expressionOutput.textContent = expression + lastOperand;
+}
+
+function insertOperator(oper) {
+  if (expression == '' && oper == '-' && lastOperand == '0') {
+    lastOperand = '-';
+    expressionOutput.textContent = lastOperand;
+  } else {
+    expression = oper + lastOperand;
+    expressionOutput.textContent = expression;
+  }
+}
 
 function clearAll() {}
 
@@ -111,8 +128,4 @@ function evaluate(expression) {
       expression = expression.replace(/^\+/, '');
     }
   }
-
-  console.log(expression);
 }
-
-evaluate('-24+10/-5');

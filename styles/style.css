@@ -30,12 +30,12 @@
   grid-row: span 2;
 }
 
-.result-text {
+.expression-text {
   font-size: 32px;
   font-weight: bold;
 }
 
-.operation-text {
+.evaluation-text {
   font-size: 24px;
   font-weight: 500;
 }
