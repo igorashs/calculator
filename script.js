@@ -80,12 +80,10 @@ function operate(operator, firstOperand, secondOperand) {
 }
 
 function evaluate(expression) {
-  const multiplyReg = /\-?\d+(\.\d+)?\*\-?\d+(\.\d+)?/;
-  const divisionReg = /\-?\d+(\.\d+)?\/\-?\d+(\.\d+)?/;
-  const addReg = /\-?\d+(\.\d+)?\+\d+(\.\d+)?/;
-  const subtractReg = /\-?\d+(\.\d+)?\-\d+(\.\d+)?/;
+  const multiDivReg = /\-?\d+(\.\d+)?[\*\/]\-?\d+(\.\d+)?/;
+  const addSubReg = /\-?\d+(\.\d+)?[\+\-]\d+(\.\d+)?/;
 
-  const operationsRegs = [multiplyReg, divisionReg, addReg, subtractReg];
+  const operationsRegs = [multiDivReg, addSubReg];
 
   const firstOperandReg = /^\-?\d+(\.\d+)?/;
   const operatorReg = /\d[\*\/\+\-]/;
@@ -117,14 +115,4 @@ function evaluate(expression) {
   console.log(expression);
 }
 
-evaluate('1/-2*2/1*-2');
-//   1/-2*2/1*-2+1/1*-1+4*10/-2+4/1+25/-5*2.5/5*-4
-//something wrong with with *
-//1/-4/1*-2+1/1*-1+4*10/-2+4/1+25/-5*2.5/5*-4
-//1/-4/-2+1/1*-1+4*10/-2+4/1+25/-5*2.5/5*-4"
-//1/-4/-2+1/-1+4*10/-2+4/1+25/-5*2.5/5*-4
-//1/-4/-2+1/-1+40/-2+4/1+25/-5*2.5/5*-4
-//1/-4/-2+1/-1+40/-2+4/1+25/-12.5/5*-4
-//1/-4/-2+1/-1+40/-2+4/1+25/-12.5/-20
-
-//-0.25/-2+1/-1+40/-2+4/1+25/-12.5/-20
+evaluate('-24+10/-5');
