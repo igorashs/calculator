@@ -128,7 +128,33 @@ function insertDot() {
   expressionOutput.textContent = expression + lastOperand;
 }
 
-function undoInput() {}
+function undoInput() {
+  const LAST_OPERAND_REG = /(\-)?\d+(\.\d+)?$/;
+  const OPER_ON_END = /[\*\/\+\-]$/;
+
+  if (lastOperand != '') {
+    lastOperand = lastOperand.replace(/.$/, '');
+    if (lastOperand == '' && expression == '') lastOperand = 0;
+    expressionOutput.textContent = expression + lastOperand;
+  } else if (lastOperand == '' && expression != '') {
+    if (OPER_ON_END.test(expression)) {
+      expression = expression.replace(OPER_ON_END, '');
+
+      lastOperand = expression.match(LAST_OPERAND_REG)[0];
+      expression = expression.replace(LAST_OPERAND_REG, '');
+
+      expressionOutput.textContent = expression + lastOperand;
+    } else {
+      lastOperand = expression.match(LAST_OPERAND_REG)[0];
+      lastOperand = lastOperand.replace(/.$/, '');
+      expression = expression.replace(LAST_OPERAND_REG, '');
+      expressionOutput.textContent = expression + lastOperand;
+    }
+  }
+
+  console.log(lastOperand);
+  console.log(expression);
+}
 
 function operate(operator, firstOperand, secondOperand) {
   switch (operator) {
