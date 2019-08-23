@@ -70,7 +70,7 @@ function displayResult() {
     if (/\d$/.test(expression + lastOperand)) {
       let result = evaluate(expression + lastOperand);
 
-      if (result == 'Infinity' || result == '-Infinity' || result == 'NaN') {
+      if (result.includes('Infinity') || result.includes('Nan')) {
         expressionOutput.textContent = 'Error.';
         evaluationOutput.textContent = 'Error.';
         expression = '';
