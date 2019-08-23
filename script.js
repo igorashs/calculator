@@ -21,6 +21,7 @@ function processInputValue(value) {
       case '8':
       case '9':
         {
+          if ((expression + lastOperand).length >= 19) return;
           insertDigit(value);
           if (lastOperand != 0) displayPreResult(expression + lastOperand);
         }
@@ -31,6 +32,7 @@ function processInputValue(value) {
       case '*':
       case '/':
         {
+          if ((expression + lastOperand).length >= 19) return;
           insertOperator(value);
         }
         break;
@@ -42,10 +44,12 @@ function processInputValue(value) {
       case 'bs':
         {
           undoInput();
+          if (lastOperand != 0) displayPreResult(expression + lastOperand);
         }
         break;
       case '.':
         {
+          if ((expression + lastOperand).length >= 19) return;
           insertDot();
         }
         break;
@@ -95,17 +99,29 @@ window.addEventListener('keydown', (e) => {
 });
 
 function displayPreResult(expression) {
-  if (expression) evaluationOutput.textContent = evaluate(expression);
+  if (expression) {
+    let preResult = evaluate(expression);
+    if (preResult.length >= 19) {
+      evaluationOutput.textContent = 'Not enough Memory<';
+    } else {
+      evaluationOutput.textContent = preResult;
+    }
+  }
 }
 
 function displayResult() {
   const LAST_OPERAND_REG = /(\-)?\d+(\.\d+)?$/;
 
   if (expression && lastOperand) {
+    lastOperand = clearDot(lastOperand);
     if (/\d$/.test(expression + lastOperand)) {
       let result = evaluate(expression + lastOperand);
 
-      if (result.includes('Infinity') || result.includes('Nan')) {
+      if (
+        result.includes('Infinity') ||
+        result.includes('Nan') ||
+        result.length >= 19
+      ) {
         expressionOutput.textContent = 'Error.';
         evaluationOutput.textContent = 'Error.';
         expression = '';
@@ -138,15 +154,7 @@ function insertDigit(digit) {
 
 function insertOperator(oper) {
   const LAST_OPER_REG = /[\+\-\*\/]$/;
-  const DOT_ON_START_REG = /^\-?\./;
-  const DOT_ON_END_REG = /\.$/;
-
-  if (lastOperand != '') {
-    if (DOT_ON_START_REG.test(lastOperand))
-      lastOperand = lastOperand.replace('.', '0.');
-    if (DOT_ON_END_REG.test(lastOperand))
-      lastOperand = lastOperand.replace('.', '');
-  }
+  lastOperand = clearDot(lastOperand);
 
   if (lastOperand == '-') return;
 
@@ -181,6 +189,19 @@ function insertOperator(oper) {
       lastOperand = '';
     }
   }
+}
+
+function clearDot(lastOperand) {
+  const DOT_ON_START_REG = /^\-?\./;
+  const DOT_ON_END_REG = /\.$/;
+
+  if (lastOperand != '') {
+    if (DOT_ON_START_REG.test(lastOperand))
+      lastOperand = lastOperand.replace('.', '0.');
+    if (DOT_ON_END_REG.test(lastOperand))
+      lastOperand = lastOperand.replace('.', '');
+  }
+  return lastOperand;
 }
 
 function clearAll() {
