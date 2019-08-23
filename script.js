@@ -119,7 +119,7 @@ function displayResult() {
 
       if (
         result.includes('Infinity') ||
-        result.includes('Nan') ||
+        result.includes('NaN') ||
         result.length >= 19
       ) {
         expressionOutput.textContent = 'Error.';
