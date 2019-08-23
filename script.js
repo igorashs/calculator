@@ -7,8 +7,7 @@ const lastOperandReg = /[\*\/]\-?\d+(\.\d+)?$/;
 let lastOperand = '0';
 let expression = '';
 
-buttonsContainer.addEventListener('click', (e) => {
-  let value = e.target.dataset.value;
+function processInputValue(value) {
   if (value != undefined) {
     switch (value) {
       case '0':
@@ -57,6 +56,42 @@ buttonsContainer.addEventListener('click', (e) => {
         break;
     }
   }
+}
+
+buttonsContainer.addEventListener('click', (e) => {
+  let value = e.target.dataset.value;
+  processInputValue(value);
+});
+
+window.addEventListener('keydown', (e) => {
+  let value = '';
+  switch (e.key) {
+    case 'Backspace':
+      value = 'bs';
+      break;
+    case 'Enter':
+      value = '=';
+      break;
+    case '1':
+    case '2':
+    case '3':
+    case '4':
+    case '5':
+    case '6':
+    case '7':
+    case '8':
+    case '9':
+    case '0':
+    case '.':
+    case '+':
+    case '-':
+    case '=':
+    case '*':
+    case '/':
+      value = e.key;
+      break;
+  }
+  processInputValue(value);
 });
 
 function displayPreResult(expression) {
