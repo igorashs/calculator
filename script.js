@@ -23,6 +23,7 @@ buttonsContainer.addEventListener('click', (e) => {
       case '9':
         {
           insertDigit(value);
+          if (lastOperand != 0) displayPreResult(expression + lastOperand);
         }
         break;
 
@@ -51,11 +52,42 @@ buttonsContainer.addEventListener('click', (e) => {
         break;
       case '=':
         {
+          displayResult();
         }
         break;
     }
   }
 });
+
+function displayPreResult(expression) {
+  if (expression) evaluationOutput.textContent = evaluate(expression);
+}
+
+function displayResult() {
+  const LAST_OPERAND_REG = /(\-)?\d+(\.\d+)?$/;
+
+  if (expression && lastOperand) {
+    if (/\d$/.test(expression + lastOperand)) {
+      let result = evaluate(expression + lastOperand);
+
+      if (result == 'Infinity' || result == '-Infinity' || result == 'NaN') {
+        expressionOutput.textContent = 'Error.';
+        evaluationOutput.textContent = 'Error.';
+        expression = '';
+        lastOperand = '0';
+        return;
+      }
+
+      evaluationOutput.textContent = expression + lastOperand;
+      expressionOutput.textContent = result;
+
+      expression = result;
+
+      lastOperand = expression.match(LAST_OPERAND_REG)[0];
+      expression = expression.replace(LAST_OPERAND_REG, '');
+    }
+  }
+}
 
 function insertDigit(digit) {
   if (expression == '' && lastOperand == '0') {
@@ -201,4 +233,5 @@ function evaluate(expression) {
       expression = expression.replace(/^\+/, '');
     }
   }
+  return expression;
 }
