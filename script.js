@@ -183,9 +183,6 @@ function undoInput() {
       expressionOutput.textContent = expression + lastOperand;
     }
   }
-
-  console.log(lastOperand);
-  console.log(expression);
 }
 
 function operate(operator, firstOperand, secondOperand) {
