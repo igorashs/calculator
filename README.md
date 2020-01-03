@@ -1,7 +1,12 @@
 # Calculator
 
-## From The Odin Project's [curriculum](https://www.theodinproject.com/lessons/rock-paper-scissors)
+## From The Odin Project's [curriculum](https://www.theodinproject.com/courses/javascript/lessons/calculator)
 
-[Live demo](https://igorashs.github.io/calculator/)
+> - [Live Demo](https://igorashs.github.io/calculator/) :shipit:
 
-Is all about regular expressions
+## Assignment
+
+> Make a calculator using JavaScript, HTML, and CSS.
+
+## License
+This project is licensed under the MIT License
