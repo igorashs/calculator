@@ -1,6 +1,6 @@
 # Calculator
 
-## From The Odin Project's [curriculum](https://www.theodinproject.com/courses/javascript/lessons/calculator)
+> ## From The Odin Project's [curriculum](https://www.theodinproject.com/courses/javascript/lessons/calculator)
 
 > - [Live Demo](https://igorashs.github.io/calculator/) :shipit:
 
